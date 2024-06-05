@@ -1,0 +1,159 @@
+﻿@model ShoppingCart
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 250px;
+            background-color: #000000; /* Set background color to black */
+            color: #ffffff; /* Text color white */
+            padding: 20px;
+            overflow-y: auto;
+        }
+
+        .content {
+            margin-left: 250px;
+            padding: 20px;
+        }
+
+        .category-link {
+            cursor: pointer;
+            color: #ffffff; /* Text color white */
+            background-color: #000000; /* Set background color to black */
+            padding: 10px; /* Add padding to make it visually appealing */
+            margin-bottom: 5px; /* Add margin to separate each item */
+            transition: background-color 0.3s; /* Smooth transition */
+        }
+
+            .category-link:hover {
+                background-color: #333; /* Hover background color dark grey */
+                color: #ffffff; /* Text color white */
+            }
+
+                .category-link:hover i {
+                    color: #ffffff; /* Icon color white */
+                }
+    </style>
+</head>
+<body>
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-3 sidebar">
+                <h3>Retail Store</h3>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item list-group-item-action category-link" id="category1">
+                        <i class="bi bi-plus-square"></i> Product
+                    </li>
+                    <li class="list-group-item list-group-item-action category-link" id="category2">
+                        <i class="bi bi-cash-coin"></i> Cart
+                    </li>
+                    <li class="list-group-item list-group-item-action category-link" id="category3">
+                        <i class="bi bi-tags"></i> Transaction
+                    </li>
+                    <!-- Add more categories as needed -->
+                </ul>
+            </div>
+
+            <div class="col-md-9 content">
+                @if (Model != null && Model.ShoppingCartDetails.Count > 0)
+                {
+                    <div class="row">
+                        <div class="col-md-12">
+                            <h1>Cart</h1>
+                            <div class="card">
+                                <div class="card-body">
+                                    <table class="table">
+                                        <thead class="thead-dark">
+                                            <tr>
+                                                <th>Product</th>
+                                                <th>Quantity</th>
+                                                <th>Price</th>
+                                                <th>Total</th>
+                                                <th></th> <!-- New column for Remove button -->
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach (var item in Model.ShoppingCartDetails)
+                                            {
+                                                <tr>
+                                                    <td>@item.Product.Name</td>
+                                                    <td>@item.Quantity</td>
+                                                    <td>@item.Product.Price.ToString("C")</td>
+                                                    <td>@(item.Quantity * item.Product.Price)</td>
+                                                    <td>
+                                                        <form asp-controller="Cart" asp-action="RemoveFromCart" method="post">
+                                                            <input type="hidden" name="productId" value="@item.ProductId" />
+                                                            <button type="submit" class="btn btn-danger">Remove</button>
+                                                        </form>
+                                                    </td>
+                                                </tr>
+                                            }
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-md-12">
+                            <a href="@Url.Action("Bayar", "Cart")" class="btn btn-primary">Proceed to Payment</a>
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <!-- Updated content for empty shopping cart -->
+                    <div class="alert alert-info" role="alert">
+                        Your shopping cart is empty. <a href="@Url.Action("Index", "User")" class="alert-link">Start shopping now!</a>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS and jQuery -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        // Get the element with id "category1"
+        var category1Link = document.getElementById('category1');
+
+        // Add event listener for "category1Link" element only
+        category1Link.addEventListener('click', function () {
+            // Redirect to Index page in User area
+            window.location.href = '@Url.Action("Index", "User")';
+        });
+
+        // Get the element with id "category2"
+        var category2Link = document.getElementById('category2');
+
+        // Add event listener for "category2Link" element only
+        category2Link.addEventListener('click', function () {
+            // Redirect to Cart Order page in Cart area
+            window.location.href = '@Url.Action("Order", "Cart")';
+        });
+
+        // Get the element with id "category3"
+        var category3Link = document.getElementById('category3');
+
+        // Add event listener for "category3Link" element only
+        category3Link.addEventListener('click', function () {
+            // Redirect to Transactions page in User area
+            window.location.href = '@Url.Action("Transactions", "User")';
+        });
+    </script>
+
+</body>
+</html>

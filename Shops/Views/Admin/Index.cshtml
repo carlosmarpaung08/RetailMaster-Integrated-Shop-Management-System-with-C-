@@ -1,0 +1,155 @@
+﻿@model IEnumerable<Shops.Models.Product>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product List</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 250px;
+            background-color: #000000; /* Set background color to black */
+            color: #ffffff; /* Text color white */
+            padding: 20px;
+            overflow-y: auto;
+        }
+
+        .content {
+            margin-left: 250px;
+            padding: 20px;
+        }
+
+        .category-link {
+            cursor: pointer;
+            color: #ffffff; /* Text color white */
+            background-color: #000000; /* Set background color to black */
+            padding: 10px; /* Add padding to make it visually appealing */
+            margin-bottom: 5px; /* Add margin to separate each item */
+            transition: background-color 0.3s; /* Smooth transition */
+        }
+
+            .category-link:hover {
+                background-color: #333; /* Hover background color dark grey */
+                color: #ffffff; /* Text color white */
+            }
+
+                .category-link:hover i {
+                    color: #ffffff; /* Icon color white */
+                }
+    </style>
+</head>
+<body>
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-3 sidebar">
+                <h3>Admin Panel</h3>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item list-group-item-action category-link" id="category1">
+                        <i class="bi bi-plus-square"></i> Add New Product
+                    </li>
+                    <li class="list-group-item list-group-item-action category-link" id="category2">
+                        <i class="bi bi-cash-coin"></i> Transaction
+                    </li>
+                    <li class="list-group-item list-group-item-action category-link" id="category3">
+                        <i class="bi bi-tags"></i> Users
+                    </li>
+                    <li class="list-group-item list-group-item-action category-link" id="category4">
+                        <i class="bi bi-tags"></i> Employees
+                    </li>
+                    <!-- Add more categories as needed -->
+                </ul>
+            </div>
+
+            <div class="col-md-9 content">
+                <h2 class="mb-4">Product List</h2>
+                <table class="table table-striped">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th scope="col">No.</th>
+                            <th scope="col">Name</th>
+                            <th scope="col">Price</th>
+                            <th scope="col">Stock</th>
+                            <th scope="col">Image</th>
+                            <th scope="col">Created At</th>
+                            <th scope="col">Updated At</th>
+                            <th scope="col">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.Select((value, index) => new { Value = value, Index = index }))
+                        {
+                            <tr>
+                                <td>@(item.Index + 1)</td>
+                                <td>@item.Value.Name</td>
+                                <td>@item.Value.Price</td>
+                                <td>@item.Value.Stock</td>
+                                <td><img src="@item.Value.ImageUrl" alt="Product Image" class="img-fluid" style="max-width: 100px; max-height: 100px;" /></td>
+                                <td>@item.Value.CreatedAt</td>
+                                <td>@item.Value.UpdatedAt</td>
+                                <td>
+                                    <div class="btn-group" role="group">
+                                        <a href="@Url.Action("Edit", "Product", new { id = item.Value.Id })" class="btn btn-sm btn-primary">Edit</a>
+                                        <a href="@Url.Action("Delete", "Product", new { id = item.Value.Id })" class="btn btn-sm btn-danger">Delete</a>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+                <p><a href="@Url.Action("Create", "Product")" class="btn btn-primary">Add New Product</a></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS and jQuery -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js" integrity="sha384-pzjw8f+II5L5Aj3m6VxJLrWivBVRVo6Iq3RqRrs/rf8mg1ldUcbpn5BBd0E929Iw" crossorigin="anonymous"></script>
+
+    <script>
+        // Get the element with id "category1"
+        var category1Link = document.getElementById('category1');
+
+        // Add event listener for "category1Link" element only
+        category1Link.addEventListener('click', function () {
+            // Redirect to Index page in Admin area
+            window.location.href = '@Url.Action("Index", "Admin")';
+        });
+
+        // Get the element with id "category2"
+        var category2Link = document.getElementById('category2');
+
+        // Add event listener for "category2Link" element only
+        category2Link.addEventListener('click', function () {
+            // Redirect to AdminOrder page in Admin area
+            window.location.href = '@Url.Action("AdminOrder", "Admin")';
+        });
+
+        // Get the element with id "category3"
+        var category3Link = document.getElementById('category3');
+
+        // Add event listener for "category3Link" element only
+        category3Link.addEventListener('click', function () {
+            // Redirect to Users page in Admin area
+            window.location.href = '@Url.Action("Users", "Admin")';
+        });
+
+        // Get the element with id "category4"
+        var category4Link = document.getElementById('category4');
+
+        // Add event listener for "category4Link" element only
+        category4Link.addEventListener('click', function () {
+            // Redirect to Employees page
+            window.location.href = '@Url.Action("Index", "Employees")';
+        });
+    </script>
+
+</body>
+</html>

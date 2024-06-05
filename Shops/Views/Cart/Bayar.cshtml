@@ -1,0 +1,137 @@
+﻿@model ShoppingCart
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 250px;
+            background-color: #000000; /* Set background color to black */
+            color: #ffffff; /* Text color white */
+            padding: 20px;
+            overflow-y: auto;
+        }
+
+        .content {
+            margin-left: 250px;
+            padding: 20px;
+        }
+
+        .category-link {
+            cursor: pointer;
+            color: #ffffff; /* Text color white */
+            background-color: #000000; /* Set background color to black */
+            padding: 10px; /* Add padding to make it visually appealing */
+            margin-bottom: 5px; /* Add margin to separate each item */
+            transition: background-color 0.3s; /* Smooth transition */
+        }
+
+            .category-link:hover {
+                background-color: #333; /* Hover background color dark grey */
+                color: #ffffff; /* Text color white */
+            }
+
+                .category-link:hover i {
+                    color: #ffffff; /* Icon color white */
+                }
+    </style>
+</head>
+<body>
+
+    <div class="container-fluid">
+        <div class="row">
+            <!-- Sidebar -->
+            <div class="col-md-3 sidebar">
+                <h3>Retail Store</h3>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item list-group-item-action category-link" id="category1">
+                        <i class="bi bi-plus-square"></i> Product
+                    </li>
+                    <li class="list-group-item list-group-item-action category-link" id="category2">
+                        <i class="bi bi-cash-coin"></i> Cart
+                    </li>
+                    <li class="list-group-item list-group-item-action category-link" id="category3">
+                        <i class="bi bi-tags"></i> Transaction
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Content -->
+            <div class="col-md-9 content">
+                <h2>Checkout</h2>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-header">
+                                <h3 class="card-title">Payment Methods</h3>
+                            </div>
+                            <div class="card-body">
+                                <div class="payment-methods">
+                                    <div class="payment-method">
+                                        <img src="/images/mandiri.png" alt="Mandiri" style="max-height: 50px;">
+                                        <p style="font-weight: bold;">Account Number: 1234567890</p>
+                                    </div>
+                                    <div class="payment-method">
+                                        <img src="/images/bri.png" alt="BRI" style="max-height: 50px;">
+                                        <p style="font-weight: bold;">Account Number: 1234567890</p>
+                                    </div>
+                                    <div class="payment-method">
+                                        <img src="/images/dana.png" alt="DANA" style="max-height: 50px;">
+                                        <p style="font-weight: bold;">DANA Number: 081234567890</p>
+                                    </div>
+                                    <!-- Add more payment methods -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-header">
+                                <h3 class="card-title">Upload Payment Proof</h3>
+                            </div>
+                            <div class="card-body">
+                                <form asp-controller="Cart" asp-action="Checkout" method="post" enctype="multipart/form-data">
+                                    <div class="form-group">
+                                        <input type="file" class="form-control-file mb-3" id="paymentProof" name="paymentProof" required>
+                                        <div class="invalid-feedback">Please choose a payment proof file.</div>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary">Submit Payment Proof</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS and jQuery -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        // Redirect links based on category
+        document.getElementById('category1').addEventListener('click', function () {
+            window.location.href = '@Url.Action("Index", "User")';
+        });
+
+        document.getElementById('category2').addEventListener('click', function () {
+            window.location.href = '@Url.Action("Order", "Cart")';
+        });
+
+        document.getElementById('category3').addEventListener('click', function () {
+            window.location.href = '@Url.Action("Transactions", "User")';
+        });
+    </script>
+
+</body>
+</html>
